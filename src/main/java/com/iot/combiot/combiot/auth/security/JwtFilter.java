@@ -12,11 +12,19 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
+
+    // Lista de rutas que no requieren autenticación
+    private static final List<String> PUBLIC_URLS = List.of(
+            "/api/auth/login",
+            "/api/auth/register"
+            // Puedes agregar más rutas públicas aquí
+    );
 
     public JwtFilter(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
@@ -26,6 +34,14 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
+        String path = request.getServletPath();
+
+        // Ignorar rutas públicas
+        if (PUBLIC_URLS.contains(path)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
