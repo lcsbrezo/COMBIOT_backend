@@ -39,14 +39,14 @@ public class DeviceService {
 
         deviceRepository.save(device);
 
-        // Llamamos al nuevo método mejorado
+        // Llamamos al nuevo metodo mejorado
         return getFirmwareUrlForDeviceType(request.getDeviceType());
     }
 
     // --- INICIO DE LA MODIFICACIÓN ---
     private String getFirmwareUrlForDeviceType(String deviceType) {
         // Asegúrate de que la URL base sea la correcta para tu entorno.
-        String baseUrl = "http://192.168.1.100:8080";
+        String baseUrl = "https://combiotbackend-production.up.railway.app";
 
         try {
             // 1. Sanitizar la entrada para evitar Path Traversal.
