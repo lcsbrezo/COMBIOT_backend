@@ -26,8 +26,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authRequest ->
                         authRequest
+                                // --- INICIO DE LA MODIFICACIÓN ---
+                                // Permitimos explícitamente el endpoint de Actuator
+                                .requestMatchers("/actuator/**").permitAll()
+                                // --- FIN DE LA MODIFICACIÓN ---
                                 .requestMatchers("/api/auth/**").permitAll()
-                                // Permite el acceso público a la carpeta de firmware
                                 .requestMatchers("/firmware/**").permitAll()
                                 .anyRequest().authenticated()
                 )
